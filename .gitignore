@@ -1,0 +1,22 @@
+# Netlify
+.netlify/
+netlify/
+
+# Local development
+node_modules/
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Logs
+*.log
+npm-debug.log*
+
