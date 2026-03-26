@@ -112,8 +112,21 @@ animatedElements.forEach(el => {
 
 // Form submission
 const contactForm = document.getElementById('contactForm');
+const ENROLLMENT_EMAIL = 'sethuramalingam.r@shalepetroacademy.in';
 
-contactForm.addEventListener('submit', (e) => {
+// Route "Enroll Now" clicks to contact form and preselect program.
+const enrollNowButtons = document.querySelectorAll('.enroll-now-btn');
+enrollNowButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const selectedProgramValue = button.dataset.program || '';
+        const programSelect = document.getElementById('program');
+        if (programSelect && selectedProgramValue) {
+            programSelect.value = selectedProgramValue;
+        }
+    });
+});
+
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     // Get form values
@@ -131,19 +144,33 @@ contactForm.addEventListener('submit', (e) => {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     submitBtn.disabled = true;
 
-    // Simulate sending (replace with actual API call)
-    setTimeout(() => {
-        // Here you would typically send the data to a server
-        console.log('Form submitted:', formData);
+    try {
+        const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(ENROLLMENT_EMAIL)}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                program: formData.program,
+                message: formData.message,
+                _subject: `New Enquiry - ${formData.program || 'General'} - Shale Petro Academy`,
+                _template: 'table',
+                _captcha: 'false'
+            })
+        });
 
-        // Reset button
+        if (!response.ok) {
+            throw new Error('Failed to submit contact form');
+        }
+
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-
-        // Reset form
         contactForm.reset();
 
-        // Show beautiful success popup
         showSuccessPopup({
             type: 'contact',
             title: 'Message Sent Successfully!',
@@ -155,7 +182,12 @@ contactForm.addEventListener('submit', (e) => {
                 { label: 'Program', value: formData.program || 'General Inquiry' }
             ]
         });
-    }, 1500);
+    } catch (error) {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        alert('Unable to send your message right now. Please try again in a moment.');
+        console.error('Contact form submission failed:', error);
+    }
 });
 
 // Counter animation for stats
