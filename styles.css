@@ -793,6 +793,15 @@ section {
     color: #666;
 }
 
+.info-item p a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.info-item p a:hover {
+    text-decoration: underline;
+}
+
 .social-links {
     display: flex;
     gap: 1rem;

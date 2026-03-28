@@ -599,7 +599,7 @@ function sendDownloadNotification(downloadData) {
     // To be implemented with your backend
     
     const notificationData = {
-        to: 'info@shalepetro.com', // Company email
+        to: 'sethuramalingam.r@shalepetroacademy.in', // Company email
         subject: `New Resource Download - ${downloadData.resource}`,
         body: `
             New user has downloaded a free resource:
