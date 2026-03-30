@@ -61,8 +61,11 @@ body {
     color: var(--primary-color);
 }
 
-.logo i {
-    font-size: 2rem;
+.site-logo {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    display: block;
 }
 
 .nav-links {
@@ -471,11 +474,26 @@ section {
 .program-card {
     background: white;
     padding: 3rem;
-    padding-top: 4.5rem;
+    padding-top: 3rem;
     border-radius: 20px;
     box-shadow: var(--shadow);
     position: relative;
     transition: all 0.3s ease;
+}
+
+.program-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    background: rgba(30, 90, 142, 0.10);
+    color: var(--primary-color);
+    margin-bottom: 1.25rem;
+}
+
+.program-icon i {
+    font-size: 1.35rem;
 }
 
 .program-card:hover {
@@ -759,6 +777,136 @@ section {
     margin-right: 0.5rem;
 }
 
+/* Opportunities Section */
+.opportunities {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--dark-color) 0%, #1a3a5c 50%, var(--primary-color) 100%);
+    color: white;
+}
+
+.opportunities-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 3rem 3.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+}
+
+.opportunities-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1rem;
+}
+
+.opportunities-eyebrow i {
+    font-size: 1.25rem;
+}
+
+.opportunities-title {
+    font-size: clamp(1.75rem, 4vw, 2.35rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.opportunities-text {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 38rem;
+}
+
+.opportunities-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-opportunities-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    color: white !important;
+    padding: 0.95rem 1.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 10px 30px rgba(220, 39, 67, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-opportunities-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(220, 39, 67, 0.45);
+    color: white;
+}
+
+.btn-opportunities-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    color: white !important;
+    border: 2px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.06);
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.btn-opportunities-secondary:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.8);
+    color: white;
+}
+
+.opportunities-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.opportunities-icon-ring {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.12);
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.06);
+}
+
+.opportunities-icon-ring i {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.social-link-instagram {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+}
+
+.social-link-instagram:hover {
+    filter: brightness(1.08);
+    transform: translateY(-5px);
+}
+
 /* Contact Section */
 .contact-content {
     display: grid;
@@ -982,6 +1130,25 @@ section {
 
     .programs-grid {
         grid-template-columns: 1fr;
+    }
+
+    .opportunities-inner {
+        grid-template-columns: 1fr;
+        padding: 2.25rem 2rem;
+        text-align: center;
+    }
+
+    .opportunities-text {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .opportunities-actions {
+        justify-content: center;
+    }
+
+    .opportunities-visual {
+        order: -1;
     }
 
     .why-grid {

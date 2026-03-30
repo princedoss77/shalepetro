@@ -20,3 +20,6 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Generated course text extracts (from local docx conversion)
+_course_text_extracts/
+

@@ -114,6 +114,13 @@ animatedElements.forEach(el => {
 const contactForm = document.getElementById('contactForm');
 const ENROLLMENT_EMAIL = 'sethuramalingam.r@shalepetroacademy.in';
 
+function getProgramLabel(value) {
+    const programSelect = document.getElementById('program');
+    if (!programSelect) return value || 'General Inquiry';
+    const option = programSelect.querySelector(`option[value="${CSS.escape(value || '')}"]`);
+    return option?.textContent?.trim() || 'General Inquiry';
+}
+
 // Route "Enroll Now" clicks to contact form and preselect program.
 const enrollNowButtons = document.querySelectorAll('.enroll-now-btn');
 enrollNowButtons.forEach((button) => {
@@ -179,7 +186,7 @@ contactForm.addEventListener('submit', async (e) => {
                 { label: 'Name', value: formData.name },
                 { label: 'Email', value: formData.email },
                 { label: 'Phone', value: formData.phone },
-                { label: 'Program', value: formData.program || 'General Inquiry' }
+                { label: 'Program', value: getProgramLabel(formData.program) }
             ]
         });
     } catch (error) {
