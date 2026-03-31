@@ -61,6 +61,12 @@ body {
     color: var(--primary-color);
 }
 
+/* Slightly smaller academy title in header */
+.navbar .logo span {
+    font-size: 1.25rem;
+    line-height: 1.1;
+}
+
 .site-logo {
     width: 46px;
     height: 46px;
@@ -185,7 +191,7 @@ body {
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    margin: 0 0 1.25rem 0;
+    margin: 0.5rem 0 1.25rem 0;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(8px);
 }
