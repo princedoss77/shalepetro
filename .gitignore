@@ -23,3 +23,9 @@ npm-debug.log*
 # Generated course text extracts (from local docx conversion)
 _course_text_extracts/
 
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
