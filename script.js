@@ -112,7 +112,6 @@ animatedElements.forEach(el => {
 
 // Form submission
 const contactForm = document.getElementById('contactForm');
-const ENROLLMENT_EMAIL = 'sethuramalingam.r@shalepetroacademy.in';
 
 function getProgramLabel(value) {
     const programSelect = document.getElementById('program');
@@ -133,69 +132,81 @@ enrollNowButtons.forEach((button) => {
     });
 });
 
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Get form values
-    const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        program: document.getElementById('program').value,
-        message: document.getElementById('message').value
-    };
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
-    // Show loading state
-    const submitBtn = contactForm.querySelector('.btn-submit');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    submitBtn.disabled = true;
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    try {
-        const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(ENROLLMENT_EMAIL)}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                program: formData.program,
-                message: formData.message,
-                _subject: `New Enquiry - ${formData.program || 'General'} - Shale Petro Academy`,
-                _template: 'table',
-                _captcha: 'false'
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to submit contact form');
+        const accessKey = (contactForm.dataset.web3formsAccessKey || '').trim();
+        if (!accessKey) {
+            alert('Contact form needs a Web3Forms access key.\n\n1) Open https://web3forms.com\n2) Create a free key for sethuramalingam.r@shalepetroacademy.in\n3) Paste it into index.html on the contact form: data-web3forms-access-key="YOUR_KEY"');
+            return;
         }
 
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-        contactForm.reset();
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            program: document.getElementById('program').value,
+            message: document.getElementById('message').value
+        };
 
-        showSuccessPopup({
-            type: 'contact',
-            title: 'Message Sent Successfully!',
-            message: `Thank you for your interest, ${formData.name}! We have received your inquiry and will get back to you within 24 hours.`,
-            details: [
-                { label: 'Name', value: formData.name },
-                { label: 'Email', value: formData.email },
-                { label: 'Phone', value: formData.phone },
-                { label: 'Program', value: getProgramLabel(formData.program) }
-            ]
-        });
-    } catch (error) {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-        alert('Unable to send your message right now. Please try again in a moment.');
-        console.error('Contact form submission failed:', error);
-    }
-});
+        const programLabel = getProgramLabel(formData.program);
+        const submitBtn = contactForm.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch(WEB3FORMS_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                body: JSON.stringify({
+                    access_key: accessKey,
+                    subject: `New Enquiry - ${programLabel} - Shale Petro Academy`,
+                    from_name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    program: programLabel,
+                    message: formData.message
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                throw new Error(data.message || `Request failed (${response.status})`);
+            }
+            if (data.success === false) {
+                throw new Error(data.message || 'Form submission failed');
+            }
+
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            contactForm.reset();
+
+            showSuccessPopup({
+                type: 'contact',
+                title: 'Message Sent Successfully!',
+                message: `Thank you for your interest, ${formData.name}! We have received your inquiry and will get back to you within 24 hours.`,
+                details: [
+                    { label: 'Name', value: formData.name },
+                    { label: 'Email', value: formData.email },
+                    { label: 'Phone', value: formData.phone },
+                    { label: 'Program', value: programLabel }
+                ]
+            });
+        } catch (error) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            alert('Unable to send your message right now. Please try again in a moment, email us directly, or call 044-46607900.');
+            console.error('Contact form submission failed:', error);
+        }
+    });
+}
 
 // Counter animation for stats
 const animateCounter = (element, target, duration = 2000) => {
